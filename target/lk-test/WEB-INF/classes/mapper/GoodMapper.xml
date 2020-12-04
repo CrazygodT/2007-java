@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.GoodMapper">
+
+    <select id="findAll" resultType="goodsType">
+       SELECT g.*,gp.typename,gp.level,gp.pid
+        FROM t_goods g,t_goodstype gp WHERE g.typeId = gp.id
+    </select>
+
+    <select id="findById" resultType="goodsType">
+        SELECT g.*,gp.typename,gp.level,gp.pid
+        FROM t_goods g,t_goodstype gp WHERE g.typeId = gp.id AND g.id=#{arg0}
+    </select>
+
+    <update id="update" parameterType="good">
+        update t_goods
+        <trim prefix="set" suffix="where" suffixOverrides=",">
+            <if test="goodsName!=null and goodsName!=''">
+                goodsName=#{goodsName},
+            </if>
+            <if test="price!=null and price!=''">
+                price=#{price},
+            </if>
+            <if test="score!=null and score!=''">
+                score=#{score},
+            </if>
+            <if test="deployDate!=null">
+                deployDate=#{deployDate},
+            </if>
+            <if test="imgPath!=null and imgPath!=''">
+                imgPath=#{imgPath},
+            </if>
+            <if test="comment!=null and comment!=''">
+                comment=#{comment},
+            </if>
+            <if test="typeId!=null and typeId!=''">
+                typeId=#{typeId},
+            </if>
+        </trim>
+        id=#{id}
+    </update>
+
+    <insert id="insert" parameterType="good">
+        insert into t_goods values (null,#{goodName},#{price},#{score},#{deployDate},#{imgPath},#{comment},#{typeId})
+    </insert>
+
+    <delete id="delete">
+        delete from t_goods where id=#{arg0}
+    </delete>
+
+
+
+</mapper>
